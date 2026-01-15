@@ -1,0 +1,4 @@
+LegacyID,CommonName,LatinName,Height,Diameter,Lat,Long,Condition,LastInspect
+TREE-001,English Oak,Quercus robur,15.5,60,53.1235,-3.4568,Good,2024-05-10
+TREE-002,Silver Birch,Betula pendula,12.0,35,53.1240,-3.4572,Fair,2023-11-20
+TREE-003,Sycamore,Acer pseudoplatanus,18.2,75,53.1238,-3.4565,Poor,2025-01-05

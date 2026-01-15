@@ -1,0 +1,9 @@
+{
+    "name": "arborintel-2035",
+    "version": "0.1.0",
+    "description": "Next-Generation Arboricultural Asset Management",
+    "scripts": {
+        "start": "./start.sh",
+        "install-all": "cd client && npm install && cd ../server && npm install"
+    }
+}
