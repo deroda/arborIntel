@@ -95,7 +95,7 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
     return (
         <section className="dashboard-content">
             {/* Map Feature (Native Core) */}
-            <div className="map-container glass animate-fade">
+            <div className="map-container">
                 <MapContainer center={[53.1234, -3.4567]} zoom={16} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
