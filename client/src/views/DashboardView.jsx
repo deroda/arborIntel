@@ -34,7 +34,7 @@ function MapFlyTo({ center }) {
 }
 
 // Memoized Map Component to prevent re-renders on weather updates
-const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchRequired, onToggleSpectral, onEdit }) => {
+const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchRequired, onToggleSpectral, onViewDetail }) => {
     return (
         <div className="map-container">
             <MapContainer center={[53.1234, -3.4567]} zoom={16} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
@@ -216,7 +216,7 @@ const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchReq
     );
 });
 
-export function DashboardView({ assets = [], onDispatch, navigatedAssetId, onEdit }) {
+export function DashboardView({ assets = [], onDispatch, navigatedAssetId, onViewDetail }) {
     const [weather, setWeather] = useState({ windSpeed_mph: 0, condition: 'Loading...' });
     const [spectralMode, setSpectralMode] = useState(false); // NDVI Multispectral Mode
 
@@ -287,8 +287,9 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId, onEdi
                 spectralMode={spectralMode}
                 dispatchRequired={dispatchRequired}
                 dispatchRequired={dispatchRequired}
+                dispatchRequired={dispatchRequired}
                 onToggleSpectral={handleToggleSpectral}
-                onEdit={onEdit}
+                onViewDetail={onViewDetail}
             />
 
             {/* Side Analytics */}
