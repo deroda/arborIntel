@@ -6,20 +6,20 @@ This document outlines the implementation steps for the ArborIntel 2035 platform
 *Establishing the core architecture and native asset management modules.*
 
 ### 🛠️ Core Architecture
-- [ ] Initialize Cloud-Native Microservices architecture.
-- [ ] Configure Hybrid Data Layer: **PostGIS** (Spatial) + **MongoDB** (Historical).
+- [x] Initialize Cloud-Native Microservices architecture. (Deployed to Vercel Serverless)
+- [x] Configure Hybrid Data Layer: **Firebase Firestore** (Replaced PostGIS/Mongo for Beta).
 - [ ] Setup Edge Computing pipeline for real-time sensor processing.
-- [ ] **Security & Identity Infrastructure**:
-    - [ ] Implement Unified Identity (OAuth2/OIDC) for SSO integration.
-    - [ ] Setup Role-Based Access Control (RBAC) middleware for API endpoints.
+- [x] **Security & Identity Infrastructure**:
+    - [x] Implement Unified Identity (**Firebase Auth**) for SSO integration.
+    - [x] Setup Role-Based Access Control (RBAC) middleware for API endpoints.
     - [ ] Implement WebAuthn/Biometric MFA bridge for field pilots.
 - [ ] Implement Multi-Tenant logic for Council-level scaling.
 
 ### 🌳 Module A: Asset Registry & GIS
-- [ ] Implement the `Digital_Twin_Tree` schema (UUID, Species, Spatial Coords).
+- [x] Implement the `Digital_Twin_Tree` schema (UUID, Species, Spatial Coords).
 - [ ] Develop GIS Engine for point and polygon plotting of tree groups.
-- [ ] Build **SmartSync** for offline-first field data capture.
-- [ ] Integrate **Industry Data Ingestion** (SQL/CSV mapping for existing datasets).
+- [x] Build **SmartSync** for offline-first field data capture. (Via Firestore Offline Persistence)
+- [x] Integrate **Industry Data Ingestion** (SQL/CSV mapping for existing datasets).
 - [ ] Implement **4D Timelines** slider for canopy change visualization.
 
 ### ⚖️ Legal & Governance
