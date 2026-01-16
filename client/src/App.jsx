@@ -107,18 +107,7 @@ function AppContent() {
   );
 }
 
-{
-  showAddModal && (
-    <AddAssetModal
-      onClose={() => setShowAddModal(false)}
-      onSuccess={refreshAssets}
-      initialData={editingAsset}
-    />
-  )
-}
-    </div >
-  );
-}
+
 
 export default function App() {
   return (
