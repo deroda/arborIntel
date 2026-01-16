@@ -262,8 +262,15 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
         return sum;
     }, 0);
 
-    const targetAsset = assets.find(a => a.asset_id === navigatedAssetId);
-    const flyToCenter = targetAsset ? [targetAsset.lat, targetAsset.long] : null;
+    // Stable computations to prevent re-renders
+    const flyToCenter = React.useMemo(() => {
+        const targetAsset = assets.find(a => a.asset_id === navigatedAssetId);
+        return targetAsset ? [targetAsset.lat, targetAsset.long] : null;
+    }, [assets, navigatedAssetId]);
+
+    const handleToggleSpectral = React.useCallback(() => {
+        setSpectralMode(prev => !prev);
+    }, []);
 
     return (
         <section className="dashboard-content">
@@ -272,7 +279,7 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                 flyToCenter={flyToCenter}
                 spectralMode={spectralMode}
                 dispatchRequired={dispatchRequired}
-                onToggleSpectral={() => setSpectralMode(!spectralMode)}
+                onToggleSpectral={handleToggleSpectral}
             />
 
             {/* Side Analytics */}
