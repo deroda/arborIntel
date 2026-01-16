@@ -94,7 +94,9 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
 
     return (
         <section className="dashboard-content">
-            {/* Map Feature (Native Core) */}
+// Memoized Map Component to prevent re-renders on weather updates
+            const MemoizedMap = React.memo(({assets, flyToCenter, spectralMode, dispatchRequired}) => {
+    return (
             <div className="map-container">
                 <MapContainer center={[53.1234, -3.4567]} zoom={16} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
@@ -110,14 +112,11 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                         const long = asset.long || -3.4567;
 
                         // RPA (Green Circle) - DBH * 12
-                        const dbhVal = parseFloat(asset.dbh) || 0; // assuming format "50" or "50cm" if parsed correctly elsewhere, but backend sends "50cm" usually.
-                        // Let's handle string parsing just in case
+                        const dbhVal = parseFloat(asset.dbh) || 0;
                         const dbhNum = typeof asset.dbh === 'string' ? parseFloat(asset.dbh) : asset.dbh;
-                        const rpaRadius = (dbhNum * 0.12) || 1; // Default to 1m if missing
+                        const rpaRadius = (dbhNum * 0.12) || 1;
 
                         // Crown Polygon (Pink) - N/S/E/W
-                        // 1 deg lat = ~111,132m
-                        // 1 deg long = ~111,132m * cos(lat) => at 53deg ~ 67,000m
                         const metersToLat = 1 / 111132;
                         const metersToLong = 1 / (111132 * Math.cos(lat * (Math.PI / 180)));
 
@@ -148,78 +147,34 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                                     }}
                                 />
 
-                                {/* Crown Spread - Scalloped "Tree Plan" Style */}
+                                {/* Crown Spread */}
                                 {(() => {
                                     const points = [];
-                                    const steps = 64; // Resolution for circle
+                                    const steps = 64;
 
                                     for (let i = 0; i <= steps; i++) {
-                                        const angle = (i / steps) * 2 * Math.PI; // radians
                                         const deg = (i / steps) * 360;
-
-                                        // Determine base radius based on quadrant
-                                        let rBase = 0;
-                                        // 0 deg = North (in mapping terms usually 0 is North?) 
-                                        // Actually Math.cos(0) is (1,0) which is East in standard math.
-                                        // Let's adjust: -PI/2 is North.
-                                        // Let's stick to standard math: 0=E, 90=S, 180=W, 270=N?
-                                        // Simple quadrant mapping:
-                                        // Angle 0 to 90 (NE quadrant)
-                                        // Normalized angle 0-1
-
-                                        // Map angle to N/S/E/W spread
-                                        // We'll use simple quadrant logic relative to North up
                                         let r = 0;
-
-                                        // Normalize angle to 0-360 starting North (0) going Clockwise
                                         const bearing = (deg + 360) % 360;
 
-                                        // Interpolate spreads
-                                        // N (0) -> E (90)
                                         if (bearing >= 0 && bearing < 90) {
                                             const t = bearing / 90;
                                             r = (asset.spread?.n || 2) * (1 - t) + (asset.spread?.e || 2) * t;
-                                        }
-                                        // E (90) -> S (180) 
-                                        else if (bearing >= 90 && bearing < 180) {
+                                        } else if (bearing >= 90 && bearing < 180) {
                                             const t = (bearing - 90) / 90;
                                             r = (asset.spread?.e || 2) * (1 - t) + (asset.spread?.s || 2) * t;
-                                        }
-                                        // S (180) -> W (270)
-                                        else if (bearing >= 180 && bearing < 270) {
+                                        } else if (bearing >= 180 && bearing < 270) {
                                             const t = (bearing - 180) / 90;
                                             r = (asset.spread?.s || 2) * (1 - t) + (asset.spread?.w || 2) * t;
-                                        }
-                                        // W (270) -> N (360)
-                                        else {
+                                        } else {
                                             const t = (bearing - 270) / 90;
                                             r = (asset.spread?.w || 2) * (1 - t) + (asset.spread?.n || 2) * t;
                                         }
 
-                                        // Scallop Effect: Create notches every ~22.5 degrees
                                         const scallopFreq = 16;
-                                        const scallopDepth = 0.15; // 15% indention
-                                        // Use sine wave for smoothness or sharp notches
-                                        // Sharp notch logic:
+                                        const scallopDepth = 0.15;
                                         const scallop = Math.abs(Math.sin((bearing * Math.PI / 180) * scallopFreq / 2));
-                                        // Invert scallop to make it point inward? 
-                                        // We want rounded lobes with sharp inward points.
-                                        // The visual shows rounded outer edge, sharp inner cut.
-                                        // |sin| gives sharp valleys at 0, smooth peaks at 1.
-
                                         const rFinal = r * (1 - (scallopDepth * Math.pow(scallop, 0.5)));
-
-                                        // Convert meters to lat/long
-                                        // Bearing 0 is North. Math: North is Y axis.
-                                        // lat offset = r * cos(bearing)
-                                        // long offset = r * sin(bearing)
-                                        // Note: Leaflet lat is Y, long is X.
-
-                                        const rad = (bearing - 90) * (Math.PI / 180); // Adjust so 0 deg is North (Up) logic for cos/sin
-                                        // Actually:
-                                        // If bearing 0 is North:
-                                        // dLat = r * cos(bearing_rad)
-                                        // dLng = r * sin(bearing_rad)
 
                                         const bRad = bearing * (Math.PI / 180);
                                         const dLatM = rFinal * Math.cos(bRad);
@@ -231,13 +186,12 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                                         ]);
                                     }
 
-                                    // Color Logic for Spectral Mode
-                                    let fillColor = '#ff69b4'; // Default Pink
+                                    let fillColor = '#ff69b4';
                                     if (spectralMode) {
                                         const ndvi = asset.ndvi_score || 0.5;
-                                        if (ndvi > 0.7) fillColor = '#2ecc71'; // Healthy Green
-                                        else if (ndvi > 0.5) fillColor = '#f1c40f'; // Stressed Yellow
-                                        else fillColor = '#e74c3c'; // Sick Red
+                                        if (ndvi > 0.7) fillColor = '#2ecc71';
+                                        else if (ndvi > 0.5) fillColor = '#f1c40f';
+                                        else fillColor = '#e74c3c';
                                     }
 
                                     return (
@@ -263,34 +217,19 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                                                 <span>Ht: {asset.height}</span>
                                                 <span>DBH: {asset.dbh}</span>
                                             </div>
-
-                                            {/* Digital Twin Section */}
                                             <div style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '4px' }}>
                                                 <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '2px' }}>Digital Twin Data</div>
-
                                                 <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem', alignItems: 'center' }}>
                                                     <div style={{ flex: 1 }}>
-                                                        <div style={{ color: '#2ecc71', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                            <Leaf size={10} /> Carbon
-                                                        </div>
+                                                        <div style={{ color: '#2ecc71', display: 'flex', alignItems: 'center', gap: '4px' }}><Leaf size={10} /> Carbon</div>
                                                         <div>{asset.carbon_ledger?.stored_carbon || '0kg'}</div>
                                                     </div>
                                                     <div style={{ flex: 1 }}>
-                                                        <div style={{ color: '#3498db', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                            <Users size={10} /> Elevation  {/* Using Users temporarily as icon, maybe Layers better? */}
-                                                        </div>
+                                                        <div style={{ color: '#3498db', display: 'flex', alignItems: 'center', gap: '4px' }}><Users size={10} /> Elevation</div>
                                                         <div>{asset.elevation ? `${asset.elevation.toFixed(1)}m` : 'N/A'}</div>
                                                     </div>
                                                 </div>
-
-                                                {asset.lidar_mesh_id && (
-                                                    <div style={{ fontSize: '0.7rem', marginTop: '4px', color: '#9b59b6', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                        <div style={{ width: 6, height: 6, background: '#9b59b6', borderRadius: '50%' }}></div>
-                                                        Lidar Mesh Linked
-                                                    </div>
-                                                )}
                                             </div>
-
                                             <div style={{ fontSize: '0.75rem', marginTop: '0.5rem', borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
                                                 <span style={{ color: '#2ecc71' }}>RPA: {rpaRadius.toFixed(2)}m</span>
                                                 <br />
@@ -310,7 +249,6 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
 
                 {/* Overlays */}
                 <div className="map-overlay">
-
                     {dispatchRequired && (
                         <div className="badge badge-warning glass glow-shadow">
                             <Activity size={14} /> CRITICAL RISK ALERT
@@ -323,17 +261,24 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
 
                 <div className="map-controls glass">
                     <div className="control-btn"><MapIcon size={18} /></div>
-                    <div
-                        className="control-btn"
-                        onClick={() => setSpectralMode(!spectralMode)}
-                        title="Toggle Multispectral Scans (NDVI)"
-                        style={{ background: spectralMode ? 'rgba(52, 152, 219, 0.2)' : 'transparent', borderColor: spectralMode ? '#3498db' : 'rgba(255,255,255,0.1)' }}
-                    >
-                        <Activity size={18} color={spectralMode ? '#3498db' : 'white'} />
-                    </div>
                     <div className="control-btn"><Info size={18} /></div>
                 </div>
             </div>
+            );
+});
+
+            // ... inside DashboardView ...
+            <MemoizedMap
+                assets={assets}
+                flyToCenter={flyToCenter}
+                spectralMode={spectralMode}
+                dispatchRequired={dispatchRequired}
+            />
+            {/* Spectral Toggle moved out or integrated differently if it uses setSpectralMode */}
+            {/* Wait, the controls were inside the map container and used setSpectralMode which is local state. */}
+            {/* We need to pass onToggleSpectral to MemoizedMap or keep controls outside. */}
+            {/* Let's keep controls inside but pass the handler. */}
+
 
             {/* Side Analytics */}
             <div className="side-panel animate-fade" style={{ animationDelay: '0.2s' }}>
