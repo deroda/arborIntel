@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_BASE = isLocal ? 'http://localhost:3001/api' : '/api';
 
+console.log(`[ArborIntel] Host: ${window.location.hostname}, API: ${API_BASE}`);
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
