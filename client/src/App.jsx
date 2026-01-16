@@ -117,6 +117,7 @@ function AppContent() {
             assets={assets}
             onDispatch={() => setActiveTab('contractors')}
             navigatedAssetId={navigatedAssetId}
+            onEdit={handleOpenModal}
           />
         ) : activeTab === 'inventory' ? (
           <InventoryView assets={assets} onAdd={handleOpenModal} />

@@ -34,7 +34,7 @@ function MapFlyTo({ center }) {
 }
 
 // Memoized Map Component to prevent re-renders on weather updates
-const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchRequired, onToggleSpectral }) => {
+const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchRequired, onToggleSpectral, onEdit }) => {
     return (
         <div className="map-container">
             <MapContainer center={[53.1234, -3.4567]} zoom={16} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
@@ -174,6 +174,13 @@ const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchReq
                                             Risk Score: {(asset.risk_score * 100).toFixed(0)}%
                                         </div>
                                         <div>Status: {asset.status}</div>
+                                        <button
+                                            onClick={() => onEdit(asset)}
+                                            className="btn-primary"
+                                            style={{ marginTop: '0.8rem', width: '100%', fontSize: '0.75rem', padding: '0.4rem', justifyContent: 'center' }}
+                                        >
+                                            VIEW FULL DETAILS
+                                        </button>
                                     </div>
                                 </Popup>
                             </Marker>
@@ -209,7 +216,7 @@ const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchReq
     );
 });
 
-export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
+export function DashboardView({ assets = [], onDispatch, navigatedAssetId, onEdit }) {
     const [weather, setWeather] = useState({ windSpeed_mph: 0, condition: 'Loading...' });
     const [spectralMode, setSpectralMode] = useState(false); // NDVI Multispectral Mode
 
@@ -279,7 +286,9 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId }) {
                 flyToCenter={flyToCenter}
                 spectralMode={spectralMode}
                 dispatchRequired={dispatchRequired}
+                dispatchRequired={dispatchRequired}
                 onToggleSpectral={handleToggleSpectral}
+                onEdit={onEdit}
             />
 
             {/* Side Analytics */}
