@@ -184,7 +184,7 @@ export function AssetDetailView({ asset, onBack }) {
                         </div>
                         <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
                             Target occupancy: High (Public Highway)<br />
-                            Size of Part: > 500mm
+                            Size of Part: &gt; 500mm
                         </div>
                     </div>
 

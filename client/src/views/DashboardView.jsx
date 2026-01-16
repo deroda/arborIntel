@@ -286,8 +286,6 @@ export function DashboardView({ assets = [], onDispatch, navigatedAssetId, onVie
                 flyToCenter={flyToCenter}
                 spectralMode={spectralMode}
                 dispatchRequired={dispatchRequired}
-                dispatchRequired={dispatchRequired}
-                dispatchRequired={dispatchRequired}
                 onToggleSpectral={handleToggleSpectral}
                 onViewDetail={onViewDetail}
             />
