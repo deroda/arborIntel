@@ -68,7 +68,7 @@ export function TpoLegalView() {
                         </h2>
                         <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', opacity: 0.7, fontSize: '0.9rem' }}>
                             <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><Calendar size={14} /> Served: {selectedTpo.date}</span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><MapBy size={14} /> Ward: {selectedTpo.ward}</span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}><MapPin size={14} /> Ward: {selectedTpo.ward}</span>
                         </div>
                     </div>
                     <button className="btn-primary" style={{ background: '#2ecc71', border: 'none' }}>
