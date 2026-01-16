@@ -19,8 +19,16 @@
             "destination": "/server/index.js"
         },
         {
-            "source": "/((?!api/|assets/|vite.svg|favicon.ico).*)",
-            "destination": "/index.html"
+            "source": "/assets/(.*)",
+            "destination": "/client/assets/$1"
+        },
+        {
+            "source": "/vite.svg",
+            "destination": "/client/vite.svg"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/client/index.html"
         }
     ]
 }
