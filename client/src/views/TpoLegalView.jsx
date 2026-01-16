@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Info, Search, FileText, MapBy, Calendar, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, Info, Search, FileText, MapPin, Calendar, AlertTriangle } from 'lucide-react';
 import { mockTpoList, mockLedger } from '../services/mockData';
 
 export function TpoLegalView() {
