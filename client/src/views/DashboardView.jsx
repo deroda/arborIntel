@@ -175,7 +175,7 @@ const MemoizedMap = React.memo(({ assets, flyToCenter, spectralMode, dispatchReq
                                         </div>
                                         <div>Status: {asset.status}</div>
                                         <button
-                                            onClick={() => onEdit(asset)}
+                                            onClick={() => onViewDetail(asset)}
                                             className="btn-primary"
                                             style={{ marginTop: '0.8rem', width: '100%', fontSize: '0.75rem', padding: '0.4rem', justifyContent: 'center' }}
                                         >
