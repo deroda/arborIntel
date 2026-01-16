@@ -127,11 +127,10 @@ function AppContent() {
             onViewDetail={handleViewDetail}
           />
         ) : activeTab === 'asset-detail' ? (
-          <div style={{ color: 'white', padding: '2rem' }}>Asset Detail View Disabled for Debugging</div>
-          /* <AssetDetailView
+          <AssetDetailView
             asset={activeAsset}
             onBack={() => setActiveTab('dashboard')}
-          /> */
+          />
         ) : activeTab === 'inventory' ? (
           <InventoryView assets={assets} onAdd={handleOpenModal} />
         ) : activeTab === 'tpo' ? (
