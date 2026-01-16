@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api';
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_BASE = isLocal ? 'http://localhost:3001/api' : '/api';
 
 export const api = {
     // Admin Security
