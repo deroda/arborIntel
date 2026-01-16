@@ -20,6 +20,7 @@ This document outlines the implementation steps for the ArborIntel 2035 platform
 - [ ] Develop GIS Engine for point and polygon plotting of tree groups.
 - [x] Build **SmartSync** for offline-first field data capture. (Via Firestore Offline Persistence)
 - [x] Integrate **Industry Data Ingestion** (SQL/CSV mapping for existing datasets).
+- [x] Implement **Asset Detail View** (Full spec modal from Map).
 - [ ] Implement **4D Timelines** slider for canopy change visualization.
 
 ### ⚖️ Legal & Governance
