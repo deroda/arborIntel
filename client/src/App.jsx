@@ -20,7 +20,7 @@ import { ContractorView } from './views/ContractorView';
 import { LoginScreen } from './views/LoginScreen';
 import { RegisterScreen } from './views/RegisterScreen';
 import { SecurityView } from './views/SecurityView';
-// import { AssetDetailView } from './views/AssetDetailView'; // DISABLED FOR DEBUGGING
+import { AssetDetailView } from './views/AssetDetailView'; // DISABLED FOR DEBUGGING
 
 // Services
 import { mockAssets } from './services/mockData';
