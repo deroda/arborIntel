@@ -15,8 +15,8 @@ export const mockContractors = [
     { name: 'Vertical Forestry', rating: 4.8, active_crews: 0, zone: 'Ruthin' }
 ];
 
-export const mockTpoData = {
-    selectedTpo: {
+export const mockTpoList = [
+    {
         id: 'TPO-2026-004',
         status: 'ENFORCED',
         ward: 'Denbigh Central',
@@ -24,9 +24,26 @@ export const mockTpoData = {
         assets: ['OAK-4401', 'OAK-4402'],
         hash: '0x8f2d9e1a3c5b7f...dde44'
     },
-    ledgerHistory: [
-        { date: '2026-01-12 09:15', action: 'TPO Enforced', user: 'Senior Arborist D. Davies', hash: 'df72b...2a81' },
-        { date: '2026-01-11 16:40', action: 'Draft Created', user: 'Asset Manager R. Smith', hash: 'e81a0...3d92' },
-        { date: '2026-01-10 11:20', action: 'Survey Verified', user: 'AI Risk Engine', hash: 'cc91d...fac4' }
-    ]
-};
+    {
+        id: 'TPO-2025-089',
+        status: 'ACTIVE',
+        ward: 'Ruthin North',
+        date: '2025-11-05',
+        assets: ['ASH-4403'],
+        hash: '0x7a8b2c1d9e2f...aabb1'
+    },
+    {
+        id: 'TPO-2024-012',
+        status: 'REVOKED',
+        ward: 'St Asaph West',
+        date: '2024-03-22',
+        assets: ['BIR-4402'],
+        hash: '0x3c2d1e5a7b9f...cc221'
+    }
+];
+
+export const mockLedger = [
+    { date: '2026-01-12 09:15', action: 'TPO Enforced', user: 'Senior Arborist D. Davies', hash: 'df72b...2a81' },
+    { date: '2026-01-11 16:40', action: 'Draft Created', user: 'Asset Manager R. Smith', hash: 'e81a0...3d92' },
+    { date: '2026-01-10 11:20', action: 'Survey Verified', user: 'AI Risk Engine', hash: 'cc91d...fac4' }
+];
